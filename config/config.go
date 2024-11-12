@@ -7,7 +7,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type Config struct {
+type EnvConfig struct {
 	PORT                 string
 	DBHost               string
 	DBPort               string
@@ -17,13 +17,13 @@ type Config struct {
 	SarmaayaClickUpToken string
 }
 
-func GetConfig() *Config {
+func GetEnvConfig() *EnvConfig {
 	// Load .env file
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
 	}
 
-	return &Config{
+	return &EnvConfig{
 		PORT:                 os.Getenv("PORT"),
 		DBHost:               os.Getenv("DB_HOST"),
 		DBPort:               os.Getenv("DB_PORT"),

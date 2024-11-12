@@ -10,8 +10,7 @@ import (
 
 func main() {
 	// Load configuration
-	// config.LoadConfig()
-	cfg := config.GetConfig()
+	cfg := config.GetEnvConfig()
 
 	// Set server mode from configuration
 	// gin.SetMode(config.AppConfig.Server.Mode)
@@ -25,6 +24,6 @@ func main() {
 	// Start server with dynamically set port
 	// port := fmt.Sprintf(":%d", config.AppConfig.Server.Port)
 	if err := router.Run(cfg.PORT); err != nil {
-		log.Fatalf("Server failed to start: %v", err)
+		log.Fatalf("Server failed to hello start: %v", err)
 	}
 }
