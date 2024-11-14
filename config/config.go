@@ -15,6 +15,7 @@ type EnvConfig struct {
 	DBPassword           string
 	DBName               string
 	SarmaayaClickUpToken string
+	ClickUpApiUrl        string
 }
 
 func GetEnvConfig() *EnvConfig {
@@ -31,5 +32,6 @@ func GetEnvConfig() *EnvConfig {
 		DBPassword:           os.Getenv("DB_PASSWORD"),
 		DBName:               os.Getenv("DB_NAME"),
 		SarmaayaClickUpToken: os.Getenv("SARMAAYA_BOT_API_TOKEN"),
+		ClickUpApiUrl:        os.Getenv("CLICKUP_API_URL"),
 	}
 }
