@@ -1,45 +1,31 @@
 package controllers
 
 import (
-	"encoding/json"
-	"log"
 	"net/http"
+	"strconv"
 
-	"github.com/abcdataorg/sarmaaya-ticketing-backend/config"
 	"github.com/abcdataorg/sarmaaya-ticketing-backend/services"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllTicketsInList(c *gin.Context) {
-	cfg := config.GetEnvConfig()
 	listId := c.Param("list_id")
-	reqUrl := cfg.ClickUpApiUrl + "/list/" + listId + "/task"
-	req, err := http.NewRequest("GET", reqUrl, nil)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if _, err := strconv.Atoi(listId); err != nil {
+		// If it fails, return an error response
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "list_id must be a valid number",
+		})
 		return
 	}
 
-	// Add the required authorization header
-	req.Header.Add("Authorization", cfg.SarmaayaClickUpToken)
-
-	res, err := http.DefaultClient.Do(req)
+	tickets, err := services.GetAllTicketsInList(listId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	defer res.Body.Close()
-
-	// Read and decode JSON response directly
-	var jsonData map[string]interface{}
-	if err := json.NewDecoder(res.Body).Decode(&jsonData); err != nil {
-		log.Println("Failed to decode JSON:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse JSON response"})
 		return
 	}
 
 	// Send the decoded JSON response
-	c.JSON(http.StatusOK, gin.H{"data": jsonData, "message": "Tickets fetched successfully"})
+	c.JSON(http.StatusOK, gin.H{"data": tickets, "message": "Tickets fetched successfully"})
 }
 
 // CreateTicket - Handles creating a new ticket in ClickUp
