@@ -12,7 +12,7 @@ import (
 
 func GetAllTicketsInList(c *gin.Context) {
 	cfg := config.GetEnvConfig()
-	listId := "901804064774"
+	listId := c.Param("list_id")
 	reqUrl := cfg.ClickUpApiUrl + "/list/" + listId + "/task"
 	req, err := http.NewRequest("GET", reqUrl, nil)
 	if err != nil {
